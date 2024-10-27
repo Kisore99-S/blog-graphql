@@ -10,4 +10,10 @@ export const resolvers = {
       return context.prisma.post.findMany({ where: { authorId: user.id } });
     },
   },
+  Post: {
+    author: async (parent, args: unknown, context: GraphQLContext) => {
+      // return context.prisma.user.findUnique({ where: { id: post.authorId } });
+      return context.loaders.authorLoader.load(parent.authorId);
+    },
+  },
 };
