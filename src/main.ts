@@ -8,6 +8,14 @@ async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (err) => {
+      return {
+        message: err.message,
+        code: err.extensions.code || "INTERNAL_SERVER_ERROR",
+        path: err.path,
+        locations: err.locations,
+      };
+    },
   });
 
   const { url } = await startStandaloneServer(server, {
